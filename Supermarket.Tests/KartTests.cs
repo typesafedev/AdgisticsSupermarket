@@ -10,8 +10,8 @@ namespace Supermarket.Tests
         public void ShouldBeZeroItemsIfSkuNotInCart()
         {
             var stock = new Skus();
-            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 2, Price = 4.5m } });
+            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
             var sut = new Kart();
 
             var items = sut.GetItems(stock.Find("A"));
@@ -22,8 +22,8 @@ namespace Supermarket.Tests
         public void ShouldAddItemsIfSkuNotInCart()
         {
             var stock = new Skus();
-            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 2, Price = 4.5m } });
+            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
             var sut = new Kart();
             var items = sut.GetItems(stock.Find("A"));
             items.ShouldBe(0);
@@ -37,8 +37,8 @@ namespace Supermarket.Tests
         public void ShouldUpdateItemsIfSkuInCart()
         {
             var stock = new Skus();
-            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 2, Price = 4.5m } });
+            stock.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            stock.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
 
             var sut = new Kart();
             var items = sut.GetItems(stock.Find("A"));

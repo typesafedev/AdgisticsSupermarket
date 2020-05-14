@@ -1,5 +1,7 @@
 ﻿using Supermarket.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Supermarket
 {
@@ -16,16 +18,25 @@ namespace Supermarket
             if (sku == null)
                 throw new ArgumentNullException(nameof(Sku));
 
-            var hasOffer = sku.Offer != null;
-            if (hasOffer)
+            var pricings = new List<Pricing>();
+            pricings.Add(new Pricing { OfferPrice = sku.Price, Units = 1 });
+
+            if (sku.Offer != null)
             {
-                var discountedUnits = units / sku.Offer.Units;
-                var fullPricedUnits = units % sku.Offer.Units;
-                var discountedPrice = discountedUnits * sku.Offer.Price;
-                var fullPrice = fullPricedUnits * sku.Price;
-                return discountedPrice + fullPrice;
+                pricings.Add(sku.Offer);
             }
-            return units * sku.Price;
+            var sortedPricing = pricings.OrderBy(p => p.UnitPrice);
+
+            int remainingUnits = units;
+            decimal price = 0;
+            foreach (var p in sortedPricing)
+            {
+                var pricedUnits = remainingUnits / p.Units;
+                remainingUnits = remainingUnits % p.Units;
+                price += pricedUnits * p.OfferPrice;
+            }
+
+            return price;
         }
 
         public decimal DifferencePrice(Sku sku, int checkedoutUnits, int newUnits)

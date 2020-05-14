@@ -1,8 +1,11 @@
-﻿namespace Supermarket.Entities
+﻿using System.Runtime.InteropServices;
+
+namespace Supermarket.Entities
 {
-    public class Offer
+    public class Pricing
     {
         public int Units { get; set; }
-        public decimal Price { get; set; }
+        public decimal OfferPrice { get; set; }
+        public decimal UnitPrice => OfferPrice / Units;
     }
 }

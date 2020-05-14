@@ -4,7 +4,6 @@
     {
         public string ItemName { get; set; }
         public decimal Price { get; set; }
-        public Offer Offer { get; set; }
-
+        public Pricing Offer { get; set; }
     }
 }

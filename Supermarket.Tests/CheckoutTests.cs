@@ -30,8 +30,8 @@ namespace Supermarket.Tests
         public void ShouldCheckoutSingleItemInBasket()
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 3, Price = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var basket = new List<(Sku sku, int items)>();
@@ -58,8 +58,8 @@ namespace Supermarket.Tests
         public void ShouldCheckoutMultipleItemsInBasketNoOffer()
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 3, Price = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var basket = new List<(Sku sku, int items)>();
@@ -87,8 +87,8 @@ namespace Supermarket.Tests
         public void ShouldCheckoutMultipleItemsInBasketWithOffer()
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 3, Price = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var basket = new List<(Sku sku, int items)>();
@@ -115,8 +115,8 @@ namespace Supermarket.Tests
         public void ShouldCheckoutMultipleItemsInBasketSplitOffer()
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Offer { Units = 3, Price = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var basket = new List<(Sku sku, int items)>();
@@ -147,7 +147,7 @@ namespace Supermarket.Tests
         {
             var skus = new Skus();
             var basket = new List<(Sku sku, int items)>();
-            basket.Add((new Sku { ItemName = "A", Price = 5, Offer = new Offer { Units = 3, Price = 13 } }, 1));
+            basket.Add((new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } }, 1));
             var pricer = new Mock<IPricer>();
             pricer.Setup(p => p.DifferencePrice(It.IsAny<Sku>(), It.IsAny<int>(), It.IsAny<int>())).Returns(1);
             var kart = new Kart();
