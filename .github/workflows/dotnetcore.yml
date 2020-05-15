@@ -25,3 +25,6 @@ jobs:
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
     - name: Test
       run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
+    - name: Code Coverage Report
+      run: |
+        reportgenerator "-reports:*Tests/**/coverage.cobertura.xml" "-targetdir:coverage-reports"
