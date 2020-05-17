@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageDescription>Example supermarket domain</PackageDescription>
+    <RepositoryUrl>https://github.com/typesafedev/AdgisticsSupermarket</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
