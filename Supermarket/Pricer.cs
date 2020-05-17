@@ -20,11 +20,8 @@ namespace Supermarket
 
             var pricings = new List<Pricing>();
             pricings.Add(new Pricing { OfferPrice = sku.Price, Units = 1 });
+            pricings.AddRange(sku.Offers);
 
-            if (sku.Offer != null)
-            {
-                pricings.Add(sku.Offer);
-            }
             var sortedPricing = pricings.OrderBy(p => p.UnitPrice);
 
             int remainingUnits = units;

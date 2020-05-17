@@ -28,8 +28,8 @@ namespace Supermarket.Tests
         public void ShouldPriceSkusNotOnOffer(string itemName, int units, decimal expectedPrice)
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offers = new[] { new Pricing { Units = 3, OfferPrice = 13 } } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offers = new[] { new Pricing { Units = 2, OfferPrice = 4.5m } } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var sut = new Pricer();
@@ -48,8 +48,8 @@ namespace Supermarket.Tests
         public void ShouldPriceSkusOnOffer(string itemName, int units, decimal expectedPrice)
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offers = new[] { new Pricing { Units = 3, OfferPrice = 13 } } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offers = new[] { new Pricing { Units = 2, OfferPrice = 4.5m } } });
             skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
             skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
             var sut = new Pricer();
@@ -61,8 +61,8 @@ namespace Supermarket.Tests
         public void ShouldKeepRunningSubtotalForSingleSkus()
         {
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offers = new[] { new Pricing { Units = 3, OfferPrice = 13 } } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offers = new[] { new Pricing { Units = 2, OfferPrice = 4.5m } } });
 
             var kart = new Kart();
             var sut = new Pricer();
@@ -100,8 +100,8 @@ namespace Supermarket.Tests
             var kart = new Kart();
             var sut = new Pricer();
 
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 2, OfferPrice = 4.5m } });
+            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offers = new[] { new Pricing { Units = 3, OfferPrice = 13 } } });
+            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offers = new[] { new Pricing { Units = 2, OfferPrice = 4.5m } } });
 
             int items;
             items = kart.GetItems(skus.Find("B"));
