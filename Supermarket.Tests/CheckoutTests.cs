@@ -1,7 +1,5 @@
-﻿using Moq;
-using Shouldly;
+﻿using Shouldly;
 using Supermarket.Entities;
-using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -10,151 +8,125 @@ namespace Supermarket.Tests
     public class CheckoutTests
     {
         [Fact]
-        public void ShouldCheckoutEmptyBasket()
+        public void ShouldCheckoutNothing()
         {
+            var a = new Sku { ItemName = "A", Price = 5 };
+            var b = new Sku { ItemName = "B", Price = 3 };
+            var offers = new List<Pricing> { new Pricing { Condition = new List<SkuUnits> { new SkuUnits { Sku = a, Units = 2 }, new SkuUnits { Sku = b, Units = 1 } } } };
             var skus = new Skus();
-            var basket = new List<(Sku sku, int items)>();
-            var pricer = new Pricer();
+            skus.AddOrUpdate(a);
+            skus.AddOrUpdate(b);
+            var emptyBasket = new List<(Sku sku, int items)>();
             var kart = new Kart();
-            var sut = new Checkout(pricer, skus);
+            var sut = new Checkout(skus, offers);
 
-            foreach(var b in basket)
+            foreach (var i in emptyBasket)
             {
-                kart = sut.Scan(kart, b.sku, b.items);
+                kart = sut.Scan(kart, i.sku, i.items);
             }
 
-            kart.Total.ShouldBe(0);
+            kart.Total.ShouldBe(0m);
         }
 
         [Fact]
-        public void ShouldCheckoutSingleItemInBasket()
+        public void ShouldCheckout1A()
         {
+            var a = new Sku { ItemName = "A", Price = 5 };
+            var b = new Sku { ItemName = "B", Price = 3 };
+            var offers = new List<Pricing> { new Pricing { Condition = new List<SkuUnits> { new SkuUnits { Sku = a, Units = 2 }, new SkuUnits { Sku = b, Units = 1 } } } };
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
-            skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
-            skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
+            skus.AddOrUpdate(a);
+            skus.AddOrUpdate(b);
             var basket = new List<(Sku sku, int items)>();
-            basket.AddRange(new[] 
-            { 
-                (skus.Find("A"), 1), 
-                (skus.Find("B"), 1), 
-                (skus.Find("C"), 1), 
-                (skus.Find("D"), 1) 
+            basket.AddRange(new[]
+            {
+                (skus.Find("A"), 1),
             });
-            var pricer = new Pricer();
             var kart = new Kart();
-            var sut = new Checkout(pricer, skus);
+            var sut = new Checkout(skus, offers);
 
-            foreach (var b in basket)
+            foreach (var i in basket)
             {
-                kart = sut.Scan(kart, b.sku, b.items);
+                kart = sut.Scan(kart, i.sku, i.items);
             }
 
-            kart.Total.ShouldBe(11.5m);
+            kart.Total.ShouldBe(5m);
         }
 
         [Fact]
-        public void ShouldCheckoutMultipleItemsInBasketNoOffer()
+        public void ShouldCheckout2A()
         {
+            var a = new Sku { ItemName = "A", Price = 5 };
+            var b = new Sku { ItemName = "B", Price = 3 };
+            var offers = new List<Pricing> { new Pricing { Condition = new List<SkuUnits> { new SkuUnits { Sku = a, Units = 2 }, new SkuUnits { Sku = b, Units = 1 } } } };
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
-            skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
-            skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
+            skus.AddOrUpdate(a);
+            skus.AddOrUpdate(b);
             var basket = new List<(Sku sku, int items)>();
-            basket.AddRange(new[] 
-            { 
-                (skus.Find("A"), 2), 
-                (skus.Find("B"), 2), 
-                (skus.Find("C"), 2), 
-                (skus.Find("D"), 2),
-            });
-            var pricer = new Pricer();
-            var kart = new Kart();
-
-            var sut = new Checkout(pricer, skus);
-
-            foreach (var b in basket)
+            basket.AddRange(new[]
             {
-                kart = sut.Scan(kart, b.sku, b.items);
+                (skus.Find("A"), 2),
+            });
+            var kart = new Kart();
+            var sut = new Checkout(skus, offers);
+
+            foreach (var i in basket)
+            {
+                kart = sut.Scan(kart, i.sku, i.items);
             }
 
-            kart.Total.ShouldBe(23m);
+            kart.Total.ShouldBe(10m);
         }
 
         [Fact]
-        public void ShouldCheckoutMultipleItemsInBasketWithOffer()
+        public void ShouldCheckout3A()
         {
+            var a = new Sku { ItemName = "A", Price = 5 };
+            var b = new Sku { ItemName = "B", Price = 3 };
+            var offers = new List<Pricing> { new Pricing { Condition = new List<SkuUnits> { new SkuUnits { Sku = a, Units = 2 }, new SkuUnits { Sku = b, Units = 1 } } } };
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
-            skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
-            skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
+            skus.AddOrUpdate(a);
+            skus.AddOrUpdate(b);
             var basket = new List<(Sku sku, int items)>();
             basket.AddRange(new[]
             {
                 (skus.Find("A"), 3),
-                (skus.Find("B"), 3),
-                (skus.Find("C"), 2),
-                (skus.Find("D"), 2),
             });
-            var pricer = new Pricer();
             var kart = new Kart();
-            var sut = new Checkout(pricer, skus);
+            var sut = new Checkout(skus, offers);
 
-            foreach (var b in basket)
+            foreach (var i in basket)
             {
-                kart = sut.Scan(kart, b.sku, b.items);
+                kart = sut.Scan(kart, i.sku, i.items);
             }
 
-            kart.Total.ShouldBe(24.5m);
+            kart.Total.ShouldBe(15m);
         }
 
         [Fact]
-        public void ShouldCheckoutMultipleItemsInBasketSplitOffer()
+        public void ShouldCheckout2A1B()
         {
+            var a = new Sku { ItemName = "A", Price = 5 };
+            var b = new Sku { ItemName = "B", Price = 3 };
+            var offers = new List<Pricing> { new Pricing { Condition = new List<SkuUnits> { new SkuUnits { Sku = a, Units = 2 }, new SkuUnits { Sku = b, Units = 1 } } } };
             var skus = new Skus();
-            skus.AddOrUpdate(new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } });
-            skus.AddOrUpdate(new Sku { ItemName = "B", Price = 3, Offer = new Pricing { Units = 3, OfferPrice = 4.5m } });
-            skus.AddOrUpdate(new Sku { ItemName = "C", Price = 2 });
-            skus.AddOrUpdate(new Sku { ItemName = "D", Price = 1.5m });
+            skus.AddOrUpdate(a);
+            skus.AddOrUpdate(b);
             var basket = new List<(Sku sku, int items)>();
             basket.AddRange(new[]
             {
-                (skus.Find("A"), 3),
-                (skus.Find("B"), 4),
-                (skus.Find("C"), 2),
-                (skus.Find("D"), 2),
-                (skus.Find("B"), 2), // Some B's checked out previously. Offer should still be applied
-                (skus.Find("A"), 3), // Some A's checked out previously. Offer should still be applied
-                (skus.Find("D"), 2), // Some D's checked out previously. D has no offers
+                (skus.Find("A"), 2),
+                (skus.Find("B"), 1),
             });
-            var pricer = new Pricer();
             var kart = new Kart();
-            var sut = new Checkout(pricer, skus);
+            var sut = new Checkout(skus, offers);
 
-            foreach (var b in basket)
+            foreach (var i in basket)
             {
-                kart = sut.Scan(kart, b.sku, b.items);
+                kart = sut.Scan(kart, i.sku, i.items);
             }
 
-            kart.Total.ShouldBe(45m);
-        }
-
-        [Fact]
-        public void ShouldThrowIfSkuNotFound()
-        {
-            var skus = new Skus();
-            var basket = new List<(Sku sku, int items)>();
-            basket.Add((new Sku { ItemName = "A", Price = 5, Offer = new Pricing { Units = 3, OfferPrice = 13 } }, 1));
-            var pricer = new Mock<IPricer>();
-            pricer.Setup(p => p.DifferencePrice(It.IsAny<Sku>(), It.IsAny<int>(), It.IsAny<int>())).Returns(1);
-            var kart = new Kart();
-            var sut = new Checkout(pricer.Object, skus);
-            Exception ex = null;
-
-            ex = Assert.Throws<KeyNotFoundException>(() => kart = sut.Scan(kart, basket[0].sku, basket[0].items));
+            kart.Total.ShouldBe(10m);
         }
     }
 }

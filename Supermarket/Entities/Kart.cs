@@ -7,7 +7,7 @@ namespace Supermarket.Entities
     /// </summary>
     public class Kart
     {
-        private Dictionary<Sku, int> Cart { get; set; } = new Dictionary<Sku, int>();
+        public Dictionary<Sku, int> Cart { get; set; } = new Dictionary<Sku, int>();
         public decimal Total { get; set; } = 0;
 
         public void AddOrUpdate(Sku sku, int items)
@@ -31,5 +31,16 @@ namespace Supermarket.Entities
 
             return items;
         }
+
+        public SkuUnits GetSkuUnits(Sku sku)
+        {
+            if (Cart.ContainsKey(sku))
+            {
+                return new SkuUnits { Sku = sku, Units = Cart[sku] };
+            }
+
+            return null;
+        }
+
     }
 }

@@ -1,11 +1,17 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Supermarket.Entities
 {
     public class Pricing
     {
-        public int Units { get; set; }
         public decimal OfferPrice { get; set; }
-        public decimal UnitPrice => OfferPrice / Units;
+        public List<SkuUnits> Condition { get; set; } = new List<SkuUnits>();
+    }
+
+    public class SkuUnits
+    {
+        public Sku Sku { get; set; }
+        public int Units { get; set; }
     }
 }
